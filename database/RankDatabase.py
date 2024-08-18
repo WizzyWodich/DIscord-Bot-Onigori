@@ -109,35 +109,6 @@ class RankDatabase:
 
     async def get_user_rubins(self, user_id):
         async with aiosqlite.connect(self.botDatabase) as db:
-<<<<<<< HEAD
-            async with db.cursor() as cursor:
-                await cursor.execute('SELECT score, level FROM economy WHERE id = ?', (user_id,))
-                result = await cursor.fetchone()
-                if result:
-                    score, level = result
-                    new_level_score = 2 ** level * 100  # Рассчитываем необходимое количество очков для достижения нового уровня
-
-                    if score >= new_level_score:
-                        await cursor.execute('''
-                            UPDATE economy
-                            SET level = level + 1, rubins = rubins + 15, coins = coins + 500, new_score = ?
-                            WHERE id = ?
-                        ''', (new_level_score * 2, user_id))
-                        await db.commit()
-                        
-                        user = await self.bot.fetch_user(user_id)
-                        await user.send(f"Ваш уровень повысился. Ваша награда: 15 рубинов и 500 монет.")
-                        # print(f"Не удалось найти текстовый канал 'название_текстового_канала'")
-                    else:
-                        pass
-                        # print("У пользователя недостаточно очков для повышения уровня.")
-                else:
-                    pass
-                    # print("Пользователь не найден в базе данных экономики.")
-
-
-    async def stavka_dekrement(self, user_id, count):
-=======
             cursor = await db.execute("SELECT rubins FROM ranked WHERE id = ?", (user_id,))
             row = await cursor.fetchone()
             if row:
@@ -146,7 +117,6 @@ class RankDatabase:
                 return None
             
     async def get_user_coins(self, user_id):
->>>>>>> dev
         async with aiosqlite.connect(self.botDatabase) as db:
             cursor = await db.execute("SELECT coins FROM ranked WHERE id = ?", (user_id,))
             row = await cursor.fetchone()

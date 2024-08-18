@@ -128,7 +128,7 @@ class PromocodeDB:
         try:
             async with aiosqlite.connect(self.botDatabase) as db:
                 async with db.cursor() as cursor:
-                    query = '''SELECT code, description, p_score, p_coin, p_ruby, uses, created_at, expires_at FROM promocodes'''
+                    query = '''SELECT code, description, p_score, p_coin, p_ruby, created_at, expires_at FROM promocodes'''
                     await cursor.execute(query)
                     rows = await cursor.fetchall()
                     
@@ -141,9 +141,8 @@ class PromocodeDB:
                             'p_score': row[2],
                             'p_coin': row[3],
                             'p_ruby': row[4],
-                            'uses': row[5],
-                            'created_at': row[6],
-                            'expires_at': row[7]
+                            'created_at': row[5],
+                            'expires_at': row[6]
                         })
                     return promocodes
         except aiosqlite.Error as e:
