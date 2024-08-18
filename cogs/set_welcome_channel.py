@@ -16,13 +16,13 @@ class Set_WelcomeChannel(commands.Cog):
         await welcome_db.create_table()
         await welcome_db.add_welcome_channel(interaction.guild, channel_id)
         
-        await interaction.send("Установлено", ephemeral=True)
+        await interaction.send("### Канал приветствия был установлен", ephemeral=True)
         
     @commands.slash_command(description="Удаление канала приветсвия")
     @commands.has_permissions(administrator=True)
     async def remove_welcome_channel(self, interaction: disnake.ApplicationCommandInteraction):
         await welcome_db.remove_channel(interaction.guild)
-        await interaction.send("Удалено", ephemeral=True)
+        await interaction.send("### Канал приветствия был удален", ephemeral=True)
         
         
 def setup(bot):

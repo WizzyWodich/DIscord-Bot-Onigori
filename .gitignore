@@ -162,11 +162,5 @@ cython_debug/
 #.idea/
 
 
-
-
-font/ 
-image/rang/
-database/fileDB/
 .idea
 .vs/
-config/config.env

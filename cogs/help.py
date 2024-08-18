@@ -16,11 +16,11 @@ class ButtonAdminHelp(disnake.ui.View):
             
             embed = disnake.Embed(
                 title="Основные команды бота",
-                description=f"**`/user` - Карточка пользователя**\n"
-                "**`/game` - Игры**\n"
-                "**`/top money` - Топ по монетам**\n"
-                "**`/top ruby` - Топ по рубинам**\n"
-                "**`/top score` - Топ по очкам опыта**\n",
+                description=f"**`/profile` - Карточка пользователя**\n"
+                "**`/promocode_details` - Получить детали промокода**\n"
+                "**`/use_promocode` - Использовать промокод**\n"
+                "**`/list_promocodes` - Показать все промокоды**\n"
+                "**`/admin_list` - Список администраторов**\n",
                 color=disnake.Color.old_blurple()
             )
             
@@ -75,11 +75,10 @@ class Help(commands.Cog):
         
         embed = disnake.Embed(
             title="Основные команды бота",
-            description=f"**`/user` - Карточка пользователя**\n"
-            "**`/game` - Игры**\n"
-            "**`/top money` - Топ по монетам**\n"
-            "**`/top ruby` - Топ по рубинам**\n"
-            "**`/top score` - Топ по очкам опыта**\n"
+            description=f"**`/profile` - Карточка пользователя**\n"
+            "**`/promocode_details` - Получить детали промокода**\n"
+            "**`/use_promocode` - Использовать промокод**\n"
+            "**`/list_promocodes` - Показать все промокоды**\n"
             "**`/admin_list` - Список администраторов**\n",
             color=disnake.Color.old_blurple()
             )
