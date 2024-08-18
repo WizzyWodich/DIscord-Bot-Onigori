@@ -11,7 +11,7 @@ class AdminListDatabase:
         async with aiosqlite.connect(self.botDatabase) as db:
             async with db.cursor() as cursor:
                 await cursor.execute('''CREATE TABLE IF NOT EXISTS adminsList (
-                                        guildID INTEGER AUTOINCREMENT,
+                                        guildID INTEGER,
                                         adminName TEXT
                                     )''')
                 await db.commit()

@@ -28,7 +28,8 @@ class BackupCog(commands.Cog):
 
         # Время последнего резервного копирования
         self.last_backup_time = datetime.now()
-
+        self.color = disnake.Colour(0x1D53CA) 
+        
         # Запуск задачи обновления таймера
         self.loop = asyncio.get_event_loop()
         self.loop.create_task(self.update_timer())
@@ -83,19 +84,29 @@ class BackupCog(commands.Cog):
 
     @commands.slash_command(name="backup", description="Создает внеплановый бекап базы данных и отправляет на почту")
     async def manual_backup(self, inter: disnake.ApplicationCommandInteraction):
+        
         if str(inter.author.id) != self.owner_id:
-            await inter.send("У вас нет прав на выполнение этой команды.", ephemeral=True)
+            embed = disnake.Embed(
+                description=f"### <:wrong1:1274387454987735123> Эта команда доступна только для владельца бота\n```Отказано в доступе```",
+                color=self.color
+            )
+            await inter.send(embed=embed, ephemeral=True)
             return
 
         await self.perform_backup()
-        await inter.send("Внеплановый бекап базы данных создан и отправлен на почту.")
+        
+        embed = disnake.Embed(
+            description=f"### <:okay:1274457946352517131> Бекап базы данных успешно отправлен на пачту.",
+            color=self.color
+        )            
+        await inter.send(embed=embed, ephemeral=True)
 
     async def update_timer(self):
         while True:
             next_backup_time = self.last_backup_time + timedelta(days=3)
             time_until_next_backup = next_backup_time - datetime.now()
             print(f"{Fore.GREEN}Time until next backup: {Fore.YELLOW}{str(time_until_next_backup).split('.')[0]}", end='\r\n')
-            await asyncio.sleep(1)  # Обновление каждую секунду
+            await asyncio.sleep(43200)  # Обновление каждую секунду
 
 def setup(bot):
     bot.add_cog(BackupCog(bot))

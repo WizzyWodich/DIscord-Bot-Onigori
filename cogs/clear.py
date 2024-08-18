@@ -6,7 +6,7 @@ class Clear(commands.Cog):
 
     @commands.slash_command(description="Очистить чат")
     async def clear(self, interaction, amount: int):
-        await interaction.response.send_message(f"Вы удалили {amount} сообщений.", ephemeral=True)
+        await interaction.response.send_message(f"### Вы удалили `{amount}` сообщений.", ephemeral=True)
         await interaction.channel.purge(limit=amount + 1)
 
 def setup(bot):

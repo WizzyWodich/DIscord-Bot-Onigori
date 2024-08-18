@@ -15,13 +15,12 @@ class LogsDatabase:
                                     )''')
                 await db.commit()
             
-    async def insert_logs_channel(self, interaction, channel: disnake.TextChannel, guild: disnake.Guild):
+    async def insert_logs_channel(self, channel: disnake.TextChannel, guild: disnake.Guild):
         async with aiosqlite.connect(self.botDatabase) as db:
             async with db.cursor() as cursor:
                 query = '''INSERT INTO logsChanel (guildID, channelLogsID) VALUES (?, ?)'''
                 await cursor.execute(query, (guild.id, channel.id))
                 await db.commit()
-            await interaction.send("Добавлено", ephemeral=True)
             
     async def get_log_channel(self, guild: disnake.Guild):
         async with aiosqlite.connect(self.botDatabase) as db:
