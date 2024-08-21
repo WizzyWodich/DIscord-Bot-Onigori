@@ -64,10 +64,13 @@ async def on_ready():
     await admin_list_db.create_table_admins_list()
 
     # Load all cogs
-    for file in os.listdir("./cogs"):
-        if file.endswith(".py"):
-            bot.load_extension(f"cogs.{file[:-3]}")
+    # for file in os.listdir("./cogs"):
+    #     if file.endswith(".py"):
+    #         bot.load_extension(f"cogs.{file[:-3]}")
 
+
+    bot.load_extension("cogs.anket")
+    
 async def reload_cogs(interaction):
     try:
         # Перезагрузка файлов бота
