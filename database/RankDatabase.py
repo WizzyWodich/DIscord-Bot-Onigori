@@ -1,9 +1,9 @@
+from pickle import INT
 import aiosqlite
 import random
 
 class RankDatabase:
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.botDatabase = "database/fileDB/BotDDatabase.db"
 
     async def create_table_ranked(self):
@@ -17,7 +17,8 @@ class RankDatabase:
                     coins INTEGER DEFAULT 1000,
                     rubins INTEGER DEFAULT 10,
                     message_count INTEGER DEFAULT 0,
-                    voice_time INTEGER DEFAULT 0
+                    voice_time INTEGER DEFAULT 0,
+                    ivent_coin INTEGER DEFAULT 0
                 )
             """)
             await db.commit()
@@ -89,8 +90,6 @@ class RankDatabase:
             else:
                 print(f"User {user_id} not found in database")  # Логирование отсутствия пользователя
                 return False
-
-
 
 
     async def update_score(self, user_id):
@@ -230,10 +229,78 @@ class RankDatabase:
             else:
                 return None
 
-    async def update_balance(self, user_id, countCoin, countRuby):
+    async def update_balance(self, user_id, countCoin: int, countRuby: int):
         async with aiosqlite.connect(self.botDatabase) as db:
             await db.execute(
                 "UPDATE ranked SET coins = coins + ?, rubins = rubins + ? WHERE id = ?",
                 (countCoin, countRuby, user_id)
             )
             await db.commit()
+
+    async def update_coins(self, user_id, countCoin: int):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            await db.execute(
+                "UPDATE ranked SET coins = coins + ? WHERE id = ?",
+                (countCoin, user_id)
+            )
+            await db.commit()
+
+    async def update_ruby(self, user_id, countRuby: int):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            await db.execute(
+                "UPDATE ranked SET rubins = rubins + ? WHERE id = ?",
+                (countRuby, user_id)
+            )
+            await db.commit()
+    
+    async def update_score_admin_panel(self, user_id, countScore: int):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            await db.execute(
+                "UPDATE ranked SET score = score + ? WHERE id = ?",
+                (countScore, user_id)
+            )
+            await db.commit()
+
+    async def update_coins_dek(self, user_id, countCoin: int):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            await db.execute(
+                "UPDATE ranked SET coins = coins - ? WHERE id = ?",
+                (countCoin, user_id)
+            )
+            await db.commit()
+
+    async def update_ruby_dek(self, user_id, countRuby: int):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            await db.execute(
+                "UPDATE ranked SET rubins = rubins - ? WHERE id = ?",
+                (countRuby, user_id)
+            )
+            await db.commit()
+    
+    async def update_score_admin_panel_dek(self, user_id, countScore: int):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            await db.execute(
+                "UPDATE ranked SET score = score - ? WHERE id = ?",
+                (countScore, user_id)
+            )
+            await db.commit()
+    
+    
+    # Ivents
+    
+    async def update_ivent_coins(self, user_id, countСhestnut: int):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            await db.execute(
+                "UPDATE ranked SET ivent_coin = ivent_coin + ? WHERE id = ?",
+                (countСhestnut, user_id)
+            )
+            await db.commit()
+    
+    async def get_user_ivent_coins(self, user_id):
+        async with aiosqlite.connect(self.botDatabase) as db:
+            cursor = await db.execute("SELECT ivent_coin FROM ranked WHERE id = ?", (user_id,))
+            row = await cursor.fetchone()
+            if row:
+                return row[0]
+            else:
+                return None

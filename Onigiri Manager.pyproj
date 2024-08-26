@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2a66d488-aa52-4b09-813e-1c08532258b6}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>main.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>MSBuild|venv|$(MSBuildProjectFullPath)</InterpreterId>
+    <SuppressPackageInstallationPrompt>True</SuppressPackageInstallationPrompt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="config\config.env" />
+    <Content Include="config\configT.env" />
+    <Content Include="database\backUP\BDatabase.db" />
+    <Content Include="database\fileDB\BotDDatabase.db" />
+    <Content Include="fileDB\BotDDatabase.db" />
+    <Content Include="font\IBMPlexSerif-LightItalic.ttf" />
+    <Content Include="font\IBMPlexSerif-Medium.ttf" />
+    <Content Include="font\InknutAntiqua-Light.ttf" />
+    <Content Include="font\Niconne-Regular.ttf" />
+    <Content Include="font\Notable-Regular.ttf" />
+    <Content Include="image\achievements\100lvl.png" />
+    <Content Include="image\achievements\10lvl.png" />
+    <Content Include="image\achievements\25lvl.png" />
+    <Content Include="image\achievements\50lvl.png" />
+    <Content Include="image\achievements\member.png" />
+    <Content Include="image\achievements\owner_bot.png" />
+    <Content Include="image\achievements\owner_server.png" />
+    <Content Include="image\achievements\Top10Score.png" />
+    <Content Include="image\admin_patel\Adminpanel.png" />
+    <Content Include="image\icons\Chevron Up.png" />
+    <Content Include="image\icons\Circled Right.png" />
+    <Content Include="image\icons\Coin.png" />
+    <Content Include="image\icons\Glowing Star.png" />
+    <Content Include="image\icons\Go Back.png" />
+    <Content Include="image\icons\Kosti.jpg" />
+    <Content Include="image\icons\kosti_low.jpg" />
+    <Content Include="image\icons\kosti_win.jpg" />
+    <Content Include="image\icons\Magazin_Coin.png" />
+    <Content Include="image\icons\Ruby.png" />
+    <Content Include="image\rang\UserDND.png" />
+    <Content Include="image\rang\UserINL.png" />
+    <Content Include="image\rang\UserOffline.png" />
+    <Content Include="image\rang\UserOnline.png" />
+    <Content Include="image\welcome_baner\Pic1.png" />
+    <Content Include="image\welcome_baner\Pic10.png" />
+    <Content Include="image\welcome_baner\Pic11.png" />
+    <Content Include="image\welcome_baner\Pic12.png" />
+    <Content Include="image\welcome_baner\Pic13.png" />
+    <Content Include="image\welcome_baner\Pic14.png" />
+    <Content Include="image\welcome_baner\Pic15.png" />
+    <Content Include="image\welcome_baner\Pic16.png" />
+    <Content Include="image\welcome_baner\Pic17.png" />
+    <Content Include="image\welcome_baner\Pic18.png" />
+    <Content Include="image\welcome_baner\Pic19.png" />
+    <Content Include="image\welcome_baner\Pic2.png" />
+    <Content Include="image\welcome_baner\Pic3.png" />
+    <Content Include="image\welcome_baner\Pic4.png" />
+    <Content Include="image\welcome_baner\Pic5.png" />
+    <Content Include="image\welcome_baner\Pic6.png" />
+    <Content Include="image\welcome_baner\Pic7.png" />
+    <Content Include="image\welcome_baner\Pic8.png" />
+    <Content Include="image\welcome_baner\Pic9.png" />
+    <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cogs\admin_panel.py" />
+    <Compile Include="cogs\auto_role.py" />
+    <Compile Include="cogs\back_up.py" />
+    <Compile Include="cogs\clear.py" />
+    <Compile Include="cogs\help.py" />
+    <Compile Include="cogs\listAdmins.py" />
+    <Compile Include="cogs\promocode.py" />
+    <Compile Include="cogs\server_info.py" />
+    <Compile Include="cogs\settings.py" />
+    <Compile Include="cogs\user_card.py" />
+    <Compile Include="cogs\verify.py" />
+    <Compile Include="cogs\voice_room.py" />
+    <Compile Include="cogs\welcome.py" />
+    <Compile Include="database\AdminsListDB.py" />
+    <Compile Include="database\AutoroleDB.py" />
+    <Compile Include="database\LogsDatabase.py" />
+    <Compile Include="database\PromocodeDB.py" />
+    <Compile Include="database\RankDatabase.py" />
+    <Compile Include="database\UserInfoDatabase.py" />
+    <Compile Include="database\VoiceRoom.py" />
+    <Compile Include="database\Welcome_Channel.py" />
+    <Compile Include="main.py" />
+    <Compile Include="support\AdminView.py" />
+    <Compile Include="support\SettingViev.py" />
+    <Compile Include="support\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cogs" />
+    <Folder Include="config\" />
+    <Folder Include="database" />
+    <Folder Include="database\backUP\" />
+    <Folder Include="database\fileDB\" />
+    <Folder Include="fileDB\" />
+    <Folder Include="font\" />
+    <Folder Include="image\" />
+    <Folder Include="image\achievements" />
+    <Folder Include="image\admin_patel" />
+    <Folder Include="image\icons" />
+    <Folder Include="image\rang" />
+    <Folder Include="image\welcome_baner" />
+    <Folder Include="support" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="venv\">
+      <Id>venv</Id>
+      <Description>venv (Python 3.11 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <Version>3.11</Version>
+      <Architecture>X64</Architecture>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
