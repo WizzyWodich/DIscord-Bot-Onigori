@@ -21,10 +21,11 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 intents = disnake.Intents.all()
 intents.message_content = True
 prefix = os.getenv('PREFIX')
-bot = commands.Bot(command_prefix=prefix, intents=intents)
+bot = commands.Bot(command_prefix=prefix, intents=intents, test_guilds=[1155576584523231373])
 bot.remove_command("help")
+
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.WARNING,  # Здесь можно использовать WARNING или ERROR
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),  # Логи в консоль
@@ -43,6 +44,7 @@ async def on_ready():
             name="Watching YouTube",
             url="https://www.youtube.com/watch?v=y3Q2fRqLlFk"
         ))
+    
 
     # Initialize databases
     logs_db = LogsDatabase()
@@ -50,7 +52,7 @@ async def on_ready():
     welcome_channel_db = WelcomeChannel()
     autorole_db = AutoRoleDanabase()
     admin_list_db = AdminListDatabase()
-    rank_db = RankDatabase(bot)
+    rank_db = RankDatabase()
     promo_db = PromocodeDB()
 
     await promo_db.create_table_promocodes()
@@ -68,6 +70,7 @@ async def on_ready():
         if file.endswith(".py"):
             bot.load_extension(f"cogs.{file[:-3]}")
 
+    
 async def reload_cogs(interaction):
     try:
         # Перезагрузка файлов бота
@@ -149,5 +152,5 @@ async def on_slash_command_error(interaction: disnake.AppCommandInteraction, err
         logging.warning("Cannot send response; interaction is already done.")
 
 
-token = os.getenv('BETA')
+token = os.getenv('STABLE')
 bot.run(token)
