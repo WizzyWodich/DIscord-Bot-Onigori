@@ -267,7 +267,7 @@ class Admin(commands.Cog):
     @commands.slash_command(name="user", description="Управление пользователем", dm_permission=False)
     @commands.has_permissions(administrator=True)
     async def user_panel(self, interaction: disnake.ApplicationCommandInteraction, member: disnake.Member):
-        self.db = RankDatabase(self.bot)
+        self.db = RankDatabase()
         view = ButtonViev(member)
         
         user_name = member.display_name
