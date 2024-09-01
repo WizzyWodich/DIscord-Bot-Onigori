@@ -65,10 +65,21 @@ async def on_ready():
     await autorole_db.create_table_autorole()
     await admin_list_db.create_table_admins_list()
 
+    load_cogs_with_debug(bot)
+    
     # Load all cogs
-    for file in os.listdir("./cogs"):
-        if file.endswith(".py"):
-            bot.load_extension(f"cogs.{file[:-3]}")
+def load_cogs_with_debug(bot: commands.Bot):
+    print("Loading extensions...")
+    for folder in os.listdir("./cogs"):
+        folder_path = os.path.join("./cogs", folder)
+        if os.path.isdir(folder_path):
+            for file in os.listdir(folder_path):
+                if file.endswith(".py") and file != '__init__.py':
+                    try:
+                        module_name = f"cogs.{folder}.{file[:-3]}"
+                        bot.load_extension(module_name)
+                        print(f"loaded {file[:-3]}")
+                    except Exception as e: print(f"not loaded {file[:-3]}\nError: {e}")
 
     
 async def reload_cogs(interaction):
