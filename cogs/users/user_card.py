@@ -66,6 +66,12 @@ class Profile(commands.Cog):
         
         # Ivent
         countСhestnut = await self.rank_db.get_user_ivent_coins(member.id)
+
+        if any(value is None for value in [level, score, new_score, coins, rubins, top_coins, top_ruby, top_score, top_messages, top_voice, countСhestnut]):
+            await interaction.followup.send(f"### {interaction.author.mention} Ошибка: Не удалось получить данные профиля. Пользователя нету в базе даных\n `Для начала стоит что то написать`", ephemeral=True)
+            return
+
+
         
          # Выбор изображений для достижений
         perck_level_image = None

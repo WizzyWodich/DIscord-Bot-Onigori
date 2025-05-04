@@ -4,7 +4,9 @@ import os
 import sys
 from dotenv import load_dotenv
 import logging
+import random
 import asyncio
+import traceback
 
 from database.UserInfoDatabase import UsersDataBase
 from database.AdminsListDB import AdminListDatabase
@@ -14,7 +16,19 @@ from database.Welcome_Channel import WelcomeChannel
 from database.RankDatabase import RankDatabase
 from database.PromocodeDB import PromocodeDB
 
-# Load environment variables
+statuses = [
+    "Наливает эль посетителям",
+    "Чистит кружки за стойкой",
+    "Слушает истории приключенцев",
+    "Обсуждает рецепты коктейлей",
+    "Подаёт горячий суп путникам",
+    "Убирает столы после вечеринки",
+    "Составляет меню на вечер",
+    "Обслуживает постоянных клиентов",
+    "Рассказывает байки о драконах",
+    "Пробует новый рецепт медовухи"
+]
+
 load_dotenv("config/config.env")
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,28 +39,32 @@ bot = commands.Bot(command_prefix=prefix, intents=intents)
 bot.remove_command("help")
 
 logging.basicConfig(
-    level=logging.WARNING,  # Здесь можно использовать WARNING или ERROR
+    level=logging.WARNING,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.StreamHandler(sys.stdout),  # Логи в консоль
-        logging.FileHandler("bot.log")  # Логи в файл bot.log
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler("bot.log")
     ]
 )
 
+async def change_status():
+    while True:
+        status_message = random.choice(statuses)
+        await bot.change_presence(
+            status=disnake.Status.online,
+            activity=disnake.Activity(
+                type=disnake.ActivityType.streaming,
+                name=status_message,
+                url="https://www.youtube.com/watch?v=08oD5oJb6Rk"
+            )
+        )
+        await asyncio.sleep(60)
 
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
-    await bot.change_presence(
-        status=disnake.Status.online,
-        activity=disnake.Activity(
-            type=disnake.ActivityType.streaming,
-            name="Watching YouTube",
-            url="https://www.youtube.com/watch?v=y3Q2fRqLlFk"
-        ))
+    bot.loop.create_task(change_status())
     
-
-    # Initialize databases
     logs_db = LogsDatabase()
     users_db = UsersDataBase()
     welcome_channel_db = WelcomeChannel()
@@ -67,7 +85,6 @@ async def on_ready():
 
     load_cogs_with_debug(bot)
     
-    # Load all cogs
 def load_cogs_with_debug(bot: commands.Bot):
     print("Loading extensions...")
     for folder in os.listdir("./cogs"):
@@ -81,10 +98,8 @@ def load_cogs_with_debug(bot: commands.Bot):
                         print(f"loaded {file[:-3]}")
                     except Exception as e: print(f"not loaded {file[:-3]}\nError: {e}")
 
-    
 async def reload_cogs(interaction):
     try:
-        # Перезагрузка файлов бота
         for file in os.listdir("./cogs"):
             if file.endswith(".py"):
                 cog_name = file[:-3]
@@ -99,7 +114,7 @@ async def reload_cogs(interaction):
                 except Exception as e:
                     logging.error(f"Error while rebooting {cog_name}: {e}")
                     await interaction.followup.send(f"### {interaction.author.mention} Ошибка при перезагрузке когов: {e}", ephemeral=True)
-                    return  # Прекратить перезагрузку, если произошла ошибка
+                    return
     except Exception as e:
         logging.error(f"Error during reboot process: {e}")
         await interaction.followup.send(f"### {interaction.author.mention} Произошла ошибка при перезагрузке файлов бота.", ephemeral=True)
@@ -109,16 +124,12 @@ async def countdown(interaction):
     for i in range(20, 0, -1):
         await asyncio.sleep(1)
         await message.edit(content=f"### {interaction.author.mention} Перезагрузка завершится через `{i}` секунд.")
-
-    # Сообщение о завершении перезагрузки
     await message.edit(content=f"### {interaction.author.mention} Файлы успешно перезагрузились.")
 
 @bot.slash_command(name="reload_cog", description="Перезагрузить ког")
-@commands.is_owner()  # Команда доступна только владельцу бота
+@commands.is_owner()
 async def reload(interaction: disnake.AppCommandInteraction):
     await interaction.response.defer(ephemeral=True)
-
-    # Запускаем перезагрузку когов и обратный отсчёт параллельно
     await asyncio.gather(
         reload_cogs(interaction),
         countdown(interaction)
@@ -126,7 +137,7 @@ async def reload(interaction: disnake.AppCommandInteraction):
 
 @bot.event
 async def on_slash_command_error(interaction: disnake.AppCommandInteraction, error):
-    color = disnake.Colour(0x1D53CA)  # Создание объекта цвета
+    color = disnake.Colour(0x1D53CA)
 
     if not interaction.response.is_done():
         try:
@@ -136,6 +147,7 @@ async def on_slash_command_error(interaction: disnake.AppCommandInteraction, err
                     color=color
                 )
                 await interaction.response.send_message(embed=embed, ephemeral=True)
+                logging.error("CommandInvokeError occurred", exc_info=True)
             elif isinstance(error, commands.MissingPermissions):
                 embed = disnake.Embed(
                     description=f"### <:roleuser:1274387457298927711> У вас недостаточно прав для выполнения этой команды\n```Отказано в доступе```",
@@ -154,14 +166,18 @@ async def on_slash_command_error(interaction: disnake.AppCommandInteraction, err
                     color=color
                 )
                 await interaction.response.send_message(embed=embed, ephemeral=True)
-                logging.error(f"Неизвестная ошибка: {error}")
+                logging.error(f"Неизвестная ошибка: {error}", exc_info=True)
         except disnake.errors.NotFound:
             logging.error("Webhook not found or interaction is already responded to.")
         except Exception as e:
-            logging.error(f"An unexpected error occurred: {e}")
+            logging.error(f"An unexpected error occurred: {e}", exc_info=True)
     else:
-        logging.warning("Cannot send response; interaction is already done.")
-
+        logging.error("Произошла ошибка при выполнении команды:", exc_info=True)
+        error_details = traceback.format_exc()
+        embed = disnake.Embed(
+        description=f"### <:wrong1:1274387454987735123> Произошла ошибка при выполнении команды:\n```{error_details}```",
+        color=color
+    )
 
 token = os.getenv('STABLE')
 bot.run(token)
