@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  onigiry-bot:
+    build: .
+    container_name: onigiry-bot
+    restart: unless-stopped
+    env_file:
+      - config.env
+    volumes:
+      - ./database/fileDB:/app/database/fileDB
